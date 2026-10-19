@@ -37,7 +37,7 @@ jobs:
           set -e
           test -s input/original.apk
           java -jar apktool.jar d \
-            -f input/original.apk \
+            -f --no-src input/original.apk \
             -o decoded
 
       - name: Inspect Android resources
