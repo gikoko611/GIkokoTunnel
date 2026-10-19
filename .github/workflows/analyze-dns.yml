@@ -1,0 +1,56 @@
+name: Analyze Hamara DNS Components
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Download JADX
+        run: |
+          curl -fL --retry 3 \
+            https://github.com/skylot/jadx/releases/download/v1.5.2/jadx-1.5.2.zip \
+            -o /tmp/jadx.zip
+          mkdir -p /tmp/jadx
+          unzip -q /tmp/jadx.zip -d /tmp/jadx
+
+      - name: Analyze DNS-related code
+        run: |
+          set -eu
+          mkdir -p reports
+          jadx/bin/jadx \
+            --no-res \
+            --show-bad-code \
+            -d /tmp/hamara-src \
+            input/original.apk
+
+          grep -RniE \
+            'fastdns|superdns|dnslite|DNSLiteService|SocksDNSService|TunnelVpnService|nameserver|dns.?tunnel' \
+            /tmp/hamara-src \
+            --include='*.java' \
+            > reports/dns-references.txt || true
+
+          echo "===== DNS REFERENCES ====="
+          head -300 reports/dns-references.txt
+
+          echo "===== REPORT SUMMARY ====="
+          wc -l reports/dns-references.txt
+
+      - name: Upload analysis report
+        uses: actions/upload-artifact@v4
+        with:
+          name: hamara-dns-analysis
+          path: reports/dns-references.txt
