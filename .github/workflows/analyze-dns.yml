@@ -31,7 +31,16 @@ jobs:
         run: |
           set -eu
           mkdir -p reports
-          jadx/bin/jadx \
+          JADX_BIN="$(find /tmp/jadx -type f -path '*/bin/jadx' -print -quit)"
+          if [ -z "$JADX_BIN" ]; then
+            echo "ERROR: JADX executable not found after extraction"
+            find /tmp/jadx -maxdepth 4 -type f | head -80
+            exit 1
+          fi
+
+          chmod +x "$JADX_BIN"
+          "$JADX_BIN" --version
+          "$JADX_BIN" \
             --no-res \
             --show-bad-code \
             -d /tmp/hamara-src \
