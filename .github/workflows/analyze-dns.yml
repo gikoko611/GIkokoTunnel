@@ -40,11 +40,27 @@ jobs:
 
           chmod +x "$JADX_BIN"
           "$JADX_BIN" --version
-          "$JADX_BIN" \
-            --no-res \
-            --show-bad-code \
-            -d /tmp/hamara-src \
-            input/original.apk
+          "$JADX_BIN" --help > /tmp/jadx-help.txt
+          echo "===== JADX INPUT OPTIONS ====="
+          grep -i -A3 -B2 -E 'input|dex|exclude|skip' /tmp/jadx-help.txt | head -100
+
+          # Analyze normal DEX files individually, excluding the malformed
+          # obfuscated asset DEX. Continue when a secondary DEX has issues.
+          mkdir -p /tmp/hamara-src
+          unzip -Z1 input/original.apk |
+            grep -E '^(classes[0-9]*\.dex)$' |
+            while IFS= read -r dex; do
+              echo "===== ANALYZING $dex ====="
+              mkdir -p "/tmp/dex-$(basename "$dex" .dex)"
+              unzip -p input/original.apk "$dex" > "/tmp/$dex"
+              "$JADX_BIN" --no-res --show-bad-code \
+                -d "/tmp/dex-$(basename "$dex" .dex)" \
+                "/tmp/$dex" || echo "WARNING: JADX could not fully analyze $dex"
+            done
+
+          find /tmp/dex-classes* -type f -name '*.java' -exec grep -niE \
+            'fastdns|superdns|dnslite|DNSLiteService|SocksDNSService|TunnelVpnService|nameserver|dns.?tunnel' \
+            {} + > reports/dns-references.txt || true
 
           grep -RniE \
             'fastdns|superdns|dnslite|DNSLiteService|SocksDNSService|TunnelVpnService|nameserver|dns.?tunnel' \
