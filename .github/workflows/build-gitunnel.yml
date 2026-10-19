@@ -1,0 +1,345 @@
+name: GITunnel - Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'input/original.apk'
+      - '.github/workflows/build-gitunnel.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'build-tools;35.0.0'
+
+      - name: Download Apktool
+        run: |
+          set -e
+          curl -fL --retry 3 \
+            -o apktool.jar \
+            https://github.com/iBotPeaches/Apktool/releases/download/v2.11.1/apktool_2.11.1.jar
+          java -jar apktool.jar --version
+
+      - name: Decode original APK
+        run: |
+          set -e
+          test -s input/original.apk
+
+          java -jar apktool.jar d \
+            -f --no-src \
+            input/original.apk \
+            -o decoded
+
+          test -s decoded/AndroidManifest.xml
+          test -s decoded/res/layout/home.xml
+
+          echo "Decode successful."
+          echo "Home layout:"
+          sed -n '1,45p' decoded/res/layout/home.xml
+
+      - name: Apply GITunnel Gold and Black theme
+        run: |
+          set -e
+
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path("decoded/res/values")
+          colors = root / "colors.xml"
+          strings = root / "strings.xml"
+          layout = Path("decoded/res/layout/home.xml")
+          manifest = Path("decoded/AndroidManifest.xml")
+
+          if not all(p.is_file() for p in (colors, strings, layout, manifest)):
+              raise SystemExit("Required Android resource file is missing.")
+
+          # Update existing color resources without rewriting the entire XML.
+          data = colors.read_text(encoding="utf-8")
+
+          palette = {
+              "accent_color": "#D4AF37",
+              "primaryDark_color": "#0B0B0D",
+              "primary_color": "#D4AF37",
+              "prince_btnEnd": "@color/primary_color",
+              "prince_btnStart": "@color/primary_color",
+          }
+
+          for name, value in palette.items():
+              pattern = (
+                  r'(<color\b[^>]*\bname="' + re.escape(name) +
+                  r'"[^>]*>).*?(</color>)'
+              )
+              data, count = re.subn(
+                  pattern,
+                  lambda m: m.group(1) + value + m.group(2),
+                  data,
+                  count=1,
+                  flags=re.S,
+              )
+              if count == 0:
+                  data = data.replace(
+                      "</resources>",
+                      f'    <color name="{name}">{value}</color>\n</resources>',
+                      1,
+                  )
+
+          extras = {
+              "gitunnel_panel": "#171719",
+              "gitunnel_divider": "#665522",
+              "gitunnel_text": "#F5F5F5",
+          }
+
+          for name, value in extras.items():
+              if not re.search(
+                  r'<color\b[^>]*\bname="' + re.escape(name) + r'"',
+                  data,
+              ):
+                  data = data.replace(
+                      "</resources>",
+                      f'    <color name="{name}">{value}</color>\n</resources>',
+                      1,
+                  )
+
+          colors.write_text(data, encoding="utf-8")
+
+          # Set the visible app name while preserving other string resources.
+          data = strings.read_text(encoding="utf-8")
+          for name in ("app", "app_name", "app_shortcut_title"):
+              pattern = (
+                  r'(<string\b[^>]*\bname="' + re.escape(name) +
+                  r'"[^>]*>).*?(</string>)'
+              )
+              data, count = re.subn(
+                  pattern,
+                  lambda m: m.group(1) + "GITunnel" + m.group(2),
+                  data,
+                  count=1,
+                  flags=re.S,
+              )
+              if count == 0 and name == "app":
+                  data = data.replace(
+                      "</resources>",
+                      '<string name="app">GITunnel</string>\n</resources>',
+                      1,
+                  )
+
+          strings.write_text(data, encoding="utf-8")
+
+          # Preserve the existing view IDs and VPN button behavior.
+          data = layout.read_text(encoding="utf-8")
+
+          # Dark background for the main screen.
+          first_tag = re.search(r'<[\w.]+(?:\s[^<>]*?)?>', data, re.S)
+          if first_tag:
+              tag = first_tag.group(0)
+              if "android:background=" in tag:
+                  tag = re.sub(
+                      r'android:background="[^"]*"',
+                      'android:background="#0B0B0D"',
+                      tag,
+                      count=1,
+                  )
+              else:
+                  tag = tag[:-1] + ' android:background="#0B0B0D">'
+              data = data[:first_tag.start()] + tag + data[first_tag.end():]
+
+          # Gold status and readable traffic counters.
+          for view_id, color in (
+              ("status", "#D4AF37"),
+              ("bytes_in", "#F5F5F5"),
+              ("bytes_out", "#F5F5F5"),
+          ):
+              pattern = (
+                  r'(<[^>]+\bandroid:id="@(?:\+)?id/' +
+                  re.escape(view_id) + r'"[^>]*>)'
+              )
+
+              def update_view(match):
+                  tag = match.group(1)
+                  if "android:textColor=" in tag:
+                      return re.sub(
+                          r'android:textColor="[^"]*"',
+                          f'android:textColor="{color}"',
+                          tag,
+                          count=1,
+                      )
+                  return tag[:-1] + f' android:textColor="{color}">'
+
+              data = re.sub(pattern, update_view, data, count=1)
+
+          # Recolor the existing protocol selector without changing its ID.
+          selector = re.compile(
+              r'(<[^>]*\bandroid:id="@(?:\+)?id/protocolSelector"[^>]*>)'
+          )
+
+          def style_selector(match):
+              tag = match.group(1)
+              for attr, value in (
+                  ("rrbg_backgroundColor", "@color/gitunnel_panel"),
+                  ("rrbg_bottomLineColor", "@color/primary_color"),
+                  ("rrbg_dividerColor", "@color/gitunnel_divider"),
+                  ("rrbg_selectorColor", "@color/primary_color"),
+              ):
+                  pattern = r'app:' + attr + r'="[^"]*"'
+                  replacement = f'app:{attr}="{value}"'
+                  if re.search(pattern, tag):
+                      tag = re.sub(pattern, replacement, tag, count=1)
+              return tag
+
+          data = selector.sub(style_selector, data, count=1)
+          layout.write_text(data, encoding="utf-8")
+
+          # Rebrand the launcher label but keep the original icon and components.
+          data = manifest.read_text(encoding="utf-8")
+          data, count = re.subn(
+              r'(<application\b[^>]*\bandroid:label=")[^"]*(")',
+              r'\1@string/app\2',
+              data,
+              count=1,
+          )
+          if count == 0:
+              raise SystemExit("Could not locate application label in manifest.")
+
+          manifest.write_text(data, encoding="utf-8")
+
+          print("Theme patch completed.")
+          print("Original activity IDs and service declarations were retained.")
+          PY
+
+      - name: Build resource APK
+        run: |
+          set -e
+          java -jar apktool.jar b decoded -o rebuilt-resources.apk
+          test -s rebuilt-resources.apk
+          ls -lh rebuilt-resources.apk
+
+      - name: Restore original DEX and missing APK entries
+        run: |
+          set -e
+
+          python3 <<'PY'
+          import zipfile
+          from pathlib import Path
+
+          original = Path("input/original.apk")
+          rebuilt = Path("rebuilt-resources.apk")
+          output = Path("unsigned-merged.apk")
+
+          with zipfile.ZipFile(original) as src, \
+               zipfile.ZipFile(rebuilt) as built, \
+               zipfile.ZipFile(output, "w") as out:
+
+              original_names = set(src.namelist())
+              built_names = set(built.namelist())
+              written = set()
+
+              # Use rebuilt Android resources and manifest.
+              # Restore every original DEX and any other missing non-resource
+              # entries. Never carry over old signing metadata.
+              for info in built.infolist():
+                  name = info.filename
+
+                  if name.upper().startswith("META-INF/"):
+                      continue
+
+                  if name.endswith(".dex"):
+                      continue
+
+                  out.writestr(info, built.read(name))
+                  written.add(name)
+
+              for info in src.infolist():
+                  name = info.filename
+
+                  if name.endswith("/"):
+                      continue
+
+                  if name.upper().startswith("META-INF/"):
+                      continue
+
+                  if name in ("AndroidManifest.xml", "resources.arsc"):
+                      continue
+
+                  if name.startswith("res/"):
+                      continue
+
+                  if name.endswith(".dex") or name not in written:
+                      out.writestr(info, src.read(name))
+                      written.add(name)
+
+              original_dex = {
+                  n for n in original_names if n.endswith(".dex")
+              }
+              final_dex = {
+                  n for n in written if n.endswith(".dex")
+              }
+
+              print("Original DEX count:", len(original_dex))
+              print("Restored DEX count:", len(original_dex & final_dex))
+
+              if not original_dex or not original_dex.issubset(final_dex):
+                  raise SystemExit("ERROR: One or more original DEX files are missing.")
+
+          print("Merged APK entries:", len(written))
+          PY
+
+          test -s unsigned-merged.apk
+
+      - name: Align and sign APK
+        run: |
+          set -e
+
+          BUILD_TOOLS="$ANDROID_HOME/build-tools/35.0.0"
+          test -x "$BUILD_TOOLS/zipalign"
+          test -x "$BUILD_TOOLS/apksigner"
+
+          keytool -genkeypair \
+            -keystore gitunnel-temporary.jks \
+            -storepass gitunnel-build \
+            -keypass gitunnel-build \
+            -alias gitunnel \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=GITunnel Build"
+
+          "$BUILD_TOOLS/zipalign" -f -p 4 \
+            unsigned-merged.apk \
+            GITunnel-aligned.apk
+
+          "$BUILD_TOOLS/apksigner" sign \
+            --ks gitunnel-temporary.jks \
+            --ks-key-alias gitunnel \
+            --ks-pass pass:gitunnel-build \
+            --key-pass pass:gitunnel-build \
+            --out GITunnel.apk \
+            GITunnel-aligned.apk
+
+          "$BUILD_TOOLS/apksigner" verify --verbose GITunnel.apk
+          ls -lh GITunnel.apk
+
+      - name: Upload installable APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: GITunnel-gold-apk
+          path: GITunnel.apk
+          if-no-files-found: error
+          retention-days: 7
