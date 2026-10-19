@@ -1,0 +1,84 @@
+import com.google.android.gms.tasks.Task;
+import java.io.Closeable;
+import java.net.URL;
+import java.util.concurrent.Future;
+
+/* DevToolsApp ERROR: NullPointerException in pass: b
+    java.lang.NullPointerException: Attempt to invoke interface method 'java.util.Iterator java.util.List.iterator()' on a null object reference
+    	at U4.b.f(SourceFile:555)
+    	at androidx.work.D.T(SourceFile:1)
+    	at n1.c.u(SourceFile:42)
+    	at C4.c.run(SourceFile:73)
+    */
+/* renamed from: Aw */
+public final class C0026Aw implements Closeable {
+    public final URL a;
+    public volatile Future b;
+    public Task c;
+
+    /* DevToolsApp ERROR: Method load error
+        g.d.a.b.DevToolsAppDecodeE: Load method exception: bogus element_width: 0000 in method: Aw.<init>(java.net.URL):void, dex: classes.dex in method: Aw.<init>(java.net.URL):void, dex: classes.dex
+        	at O4.o.y(SourceFile:95)
+        	at O4.b.v(SourceFile:19)
+        	at n1.c.u(SourceFile:19)
+        	at C4.c.run(SourceFile:73)
+        Caused by: g.d.a.b.DevToolsAppDecodeE: bogus element_width: 0000 in method: Aw.<init>(java.net.URL):void, dex: classes.dex
+        	at v0.s.u(SourceFile:75)
+        	at O4.o.y(SourceFile:40)
+        	... 3 more
+        Caused by: com.android.dex.DexException: bogus element_width: 0000
+        	at com.android.dx.io.instructions.InstructionCodec$36.h(SourceFile:59)
+        	at v0.s.u(SourceFile:53)
+        	... 4 more
+        */
+    public C0026Aw(java.net.URL r1) {
+        /*
+        // Can't load method instructions: Load method exception: bogus element_width: 0000 in method: Aw.<init>(java.net.URL):void, dex: classes.dex in method: Aw.<init>(java.net.URL):void, dex: classes.dex
+        */
+        throw new UnsupportedOperationException("Method not decompiled: Aw.<init>(java.net.URL):void");
+    }
+
+    /* DevToolsApp ERROR: Method load error
+        g.d.a.b.DevToolsAppDecodeE: Load method exception: bogus element_width: 0000 in method: Aw.close():void, dex: classes.dex in method: Aw.close():void, dex: classes.dex
+        	at O4.o.y(SourceFile:95)
+        	at O4.b.v(SourceFile:19)
+        	at n1.c.u(SourceFile:19)
+        	at C4.c.run(SourceFile:73)
+        Caused by: g.d.a.b.DevToolsAppDecodeE: bogus element_width: 0000 in method: Aw.close():void, dex: classes.dex
+        	at v0.s.u(SourceFile:75)
+        	at O4.o.y(SourceFile:40)
+        	... 3 more
+        Caused by: com.android.dex.DexException: bogus element_width: 0000
+        	at com.android.dx.io.instructions.InstructionCodec$36.h(SourceFile:59)
+        	at v0.s.u(SourceFile:53)
+        	... 4 more
+        */
+    public final void close() {
+        /*
+        // Can't load method instructions: Load method exception: bogus element_width: 0000 in method: Aw.close():void, dex: classes.dex in method: Aw.close():void, dex: classes.dex
+        */
+        throw new UnsupportedOperationException("Method not decompiled: Aw.close():void");
+    }
+
+    /* DevToolsApp ERROR: Method load error
+        g.d.a.b.DevToolsAppDecodeE: Load method exception: bogus element_width: 0000 in method: Aw.d():android.graphics.Bitmap, dex: classes.dex in method: Aw.d():android.graphics.Bitmap, dex: classes.dex
+        	at O4.o.y(SourceFile:95)
+        	at O4.b.v(SourceFile:19)
+        	at n1.c.u(SourceFile:19)
+        	at C4.c.run(SourceFile:73)
+        Caused by: g.d.a.b.DevToolsAppDecodeE: bogus element_width: 0000 in method: Aw.d():android.graphics.Bitmap, dex: classes.dex
+        	at v0.s.u(SourceFile:75)
+        	at O4.o.y(SourceFile:40)
+        	... 3 more
+        Caused by: com.android.dex.DexException: bogus element_width: 0000
+        	at com.android.dx.io.instructions.InstructionCodec$36.h(SourceFile:59)
+        	at v0.s.u(SourceFile:53)
+        	... 4 more
+        */
+    public final android.graphics.Bitmap d() {
+        /*
+        // Can't load method instructions: Load method exception: bogus element_width: 0000 in method: Aw.d():android.graphics.Bitmap, dex: classes.dex in method: Aw.d():android.graphics.Bitmap, dex: classes.dex
+        */
+        throw new UnsupportedOperationException("Method not decompiled: Aw.d():android.graphics.Bitmap");
+    }
+}

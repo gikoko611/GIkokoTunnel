@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<RelativeLayout xmlns:ns0="http://schemas.android.com/apk/res/android" xmlns:ns1="http://schemas.android.com/apk/res-auto" ns0:orientation="vertical" ns0:background="#0B0B0D" ns0:layout_width="match_parent" ns0:layout_height="match_parent">
+    <RelativeLayout ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:layout_weight="1">
+        <ScrollView ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:fillViewport="true">
+            <RelativeLayout ns0:layout_width="match_parent" ns0:layout_height="wrap_content">
+                <LinearLayout ns0:orientation="vertical" ns0:layout_width="match_parent" ns0:layout_height="match_parent">
+                    <RelativeLayout ns0:id="@+id/graph_holder" ns0:layout_width="match_parent" ns0:layout_height="120dp" ns0:layout_marginBottom="10dp">
+                        <ImageView ns0:id="@+id/flippy" ns0:layout_width="32dp" ns0:layout_height="32dp" ns0:layout_marginTop="15dp" ns0:layout_marginBottom="15dp" ns0:src="@drawable/hamburger" ns0:tint="@color/primary_color" ns0:layout_alignParentLeft="true" ns0:layout_marginStart="15dp" ns0:layout_marginEnd="15dp" />
+                        <ImageView ns0:id="@+id/homeView1" ns0:src="@drawable/gi_brand_logo" ns0:layout_width="100dp" ns0:layout_height="100dp" ns0:layout_marginBottom="10dp" ns0:layout_centerInParent="true" />
+                        <fragment ns0:name="hamara.tunnel.vpn.fragment.GraphFragment" ns0:id="@+id/graph_layout" ns0:visibility="gone" ns0:layout_width="match_parent" ns0:layout_height="match_parent" />
+                    </RelativeLayout>
+                    <RelativeLayout ns0:layout_gravity="center" ns0:orientation="vertical" ns0:layout_width="300dp" ns0:layout_height="wrap_content" ns0:layout_marginTop="10dp">
+                        <LinearLayout ns0:layout_gravity="center" ns0:orientation="horizontal" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:layout_marginTop="0dp" ns0:layout_marginRight="10dp" ns0:layout_marginBottom="3dp" ns0:layout_alignParentRight="true">
+                            <TextView ns0:textAppearance="?unknown_attr_ref: 1010042" ns0:textSize="11sp" ns0:typeface="serif" ns0:textStyle="bold" ns0:textColor="#F5F5F5" ns0:gravity="center" ns0:layout_gravity="center" ns0:id="@+id/bytes_out" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:text="0 KB" />
+                            <ImageView ns0:layout_gravity="center" ns0:layout_width="35dp" ns0:layout_height="25dp" ns0:src="@drawable/ic_cloud_upload" ns0:tint="@color/primary_color" />
+                        </LinearLayout>
+                        <LinearLayout ns0:layout_gravity="center" ns0:orientation="horizontal" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:layout_marginLeft="10dp" ns0:layout_marginTop="0dp" ns0:layout_marginBottom="3dp" ns0:layout_alignParentLeft="true">
+                            <ImageView ns0:layout_gravity="center" ns0:layout_width="35dp" ns0:layout_height="25dp" ns0:src="@drawable/ic_cloud_download" ns0:tint="@color/primary_color" />
+                            <TextView ns0:textAppearance="?unknown_attr_ref: 1010042" ns0:textSize="11sp" ns0:typeface="serif" ns0:textStyle="bold" ns0:textColor="#F5F5F5" ns0:gravity="center" ns0:layout_gravity="center" ns0:id="@+id/bytes_in" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:text="0 KB" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                    <TextView ns0:textAppearance="?unknown_attr_ref: 1010041" ns0:textSize="16sp" ns0:typeface="serif" ns0:textStyle="bold" ns0:textColor="#ff0000" ns0:gravity="center" ns0:layout_gravity="center" ns0:id="@+id/status" ns0:padding="5dp" ns0:layout_width="300dp" ns0:layout_height="wrap_content" ns0:layout_marginBottom="5dp" ns0:text="@string/disconnected" ns0:maxLines="1" ns0:layout_centerInParent="true" />
+                    <RelativeLayout ns0:layout_gravity="center" ns0:orientation="vertical" ns0:padding="5dp" ns0:layout_width="300dp" ns0:layout_height="wrap_content" ns0:layout_marginTop="5dp">
+                        <RelativeLayout ns0:orientation="horizontal" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content">
+                            <TextView ns0:textAppearance="?unknown_attr_ref: 1010042" ns0:textSize="9sp" ns0:textStyle="bold" ns0:textColor="#F5F5F5" ns0:gravity="center" ns0:layout_gravity="center" ns0:id="@+id/build_version" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:layout_marginLeft="10dp" ns0:text="Build Version: 1" ns0:layout_alignParentLeft="true" />
+                            <TextView ns0:textAppearance="?unknown_attr_ref: 1010042" ns0:textSize="9sp" ns0:textStyle="bold" ns0:textColor="#F5F5F5" ns0:gravity="center" ns0:layout_gravity="center" ns0:id="@+id/duration" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:text="Duration: 00:00:00" ns0:layout_centerInParent="true" />
+                            <TextView ns0:textAppearance="?unknown_attr_ref: 1010042" ns0:textSize="9sp" ns0:textStyle="bold" ns0:textColor="#F5F5F5" ns0:gravity="center" ns0:layout_gravity="center" ns0:id="@+id/config_version" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:layout_marginRight="10dp" ns0:text="Config Version: 1" ns0:layout_alignParentRight="true" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+                    <LinearLayout ns0:layout_gravity="center" ns0:orientation="horizontal" ns0:layout_width="350dp" ns0:layout_height="wrap_content" ns0:layout_margin="10dp">
+                        <co.ceryle.radiorealbutton.RadioRealButtonGroup ns0:layout_gravity="center_vertical" ns0:id="@+id/protocolSelector" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:elevation="2dp" ns1:rrbg_animateTexts_enter="b" ns1:rrbg_animateTexts_enterDuration="500" ns1:rrbg_backgroundColor="@color/gitunnel_panel" ns1:rrbg_bottomLineColor="@color/gitunnel_divider" ns1:rrbg_bottomLineSize="2dp" ns1:rrbg_checkedPosition="0" ns1:rrbg_dividerColor="@color/gitunnel_divider" ns1:rrbg_dividerPadding="10dp" ns1:rrbg_dividerRadius="0dp" ns1:rrbg_dividerSize="1dp" ns1:rrbg_enableDeselection="false" ns1:rrbg_radius="0dp" ns1:rrbg_selectorAboveOfBottomLine="true" ns1:rrbg_selectorColor="@color/gitunnel_selector" ns1:rrbg_selectorFullSize="true" ns1:rrbg_selectorSize="4dp">
+                            <co.ceryle.radiorealbutton.RadioRealButton ns0:id="@+id/udpRadio" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns1:rrb_drawableHeight="24dp" ns1:rrb_drawableWidth="24dp" ns1:rrb_text="UDP" ns1:rrb_textStyle="2" ns1:rrb_textTypeface="3" />
+                            <co.ceryle.radiorealbutton.RadioRealButton ns0:id="@+id/fastRadio" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns1:rrb_drawableHeight="24dp" ns1:rrb_drawableWidth="24dp" ns1:rrb_text="FastDNS" ns1:rrb_textStyle="2" ns1:rrb_textTypeface="3" />
+                            <co.ceryle.radiorealbutton.RadioRealButton ns0:id="@+id/superRadio" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns1:rrb_drawableHeight="24dp" ns1:rrb_drawableWidth="24dp" ns1:rrb_text="SuperDNS" ns1:rrb_textStyle="2" ns1:rrb_textTypeface="3" />
+                            <co.ceryle.radiorealbutton.RadioRealButton ns0:id="@+id/DNSLITERadio" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns1:rrb_drawableHeight="24dp" ns1:rrb_drawableWidth="24dp" ns1:rrb_text="DNSLite" ns1:rrb_textStyle="2" ns1:rrb_textTypeface="3" />
+                        </co.ceryle.radiorealbutton.RadioRealButtonGroup>
+                    </LinearLayout>
+                    <com.skyfishjy.library.RippleBackground ns0:gravity="center" ns0:layout_gravity="center" ns0:id="@+id/button_group" ns0:layout_width="250dp" ns0:layout_height="200dp" ns0:layout_marginLeft="5dp" ns0:layout_marginTop="25dp" ns0:layout_marginRight="5dp" ns0:layout_marginBottom="0dp" ns1:rb_duration="2000" ns1:rb_radius="20dp" ns1:rb_rippleAmount="4" ns1:rb_scale="5">
+                        <LinearLayout ns0:gravity="center" ns0:orientation="horizontal" ns0:padding="5sp" ns0:layout_width="150dp" ns0:layout_height="150dp" ns0:layout_centerInParent="true">
+                            <Button ns0:layout_gravity="center" ns0:id="@+id/connect" ns0:background="@drawable/power" ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:layout_centerHorizontal="true" />
+                            <Button ns0:layout_gravity="center" ns0:id="@+id/disconnect" ns0:background="@drawable/power" ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:layout_centerHorizontal="true" />
+                        </LinearLayout>
+                    </com.skyfishjy.library.RippleBackground>
+                </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+    <com.google.android.libraries.ads.mobile.sdk.banner.AdView ns0:id="@+id/adView" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:layout_alignParentBottom="true" ns0:layout_centerHorizontal="true" />
+</RelativeLayout>

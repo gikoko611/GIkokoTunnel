@@ -1,0 +1,101 @@
+name: GITunnel - Inspect Original APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'input/original.apk'
+      - '.github/workflows/inspect-apk.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Download Apktool
+        run: |
+          set -e
+          curl -fL --retry 3 \
+            -o apktool.jar \
+            https://github.com/iBotPeaches/Apktool/releases/download/v2.11.1/apktool_2.11.1.jar
+          java -jar apktool.jar --version
+
+      - name: Decode original APK
+        run: |
+          set -e
+          test -s input/original.apk
+          java -jar apktool.jar d \
+            -f input/original.apk \
+            -o decoded
+
+      - name: Inspect Android resources
+        run: |
+          set -e
+          mkdir -p inspection
+
+          {
+            echo "===== APK FILE ====="
+            ls -lh input/original.apk
+
+            echo
+            echo "===== MANIFEST PACKAGE / COMPONENTS ====="
+            grep -nE 'package=|<activity|<service|uses-sdk|targetSdkVersion|versionName|versionCode' \
+              decoded/AndroidManifest.xml || true
+
+            echo
+            echo "===== MAIN LAYOUT FILES ====="
+            find decoded/res/layout* -maxdepth 1 -type f \
+              2>/dev/null | sort | head -100
+
+            echo
+            echo "===== CONNECT / STATUS / SPEED RESOURCE REFERENCES ====="
+            grep -R -nE 'bytes_in|bytes_out|protocolSelector|@\\+id/connect|@id/connect|@\\+id/status|@id/status' \
+              decoded/res/layout* 2>/dev/null || true
+
+            echo
+            echo "===== COLOR RESOURCES ====="
+            grep -R -nE 'name="(primary_color|primaryDark_color|accent_color|prince_btnStart|prince_btnEnd)"' \
+              decoded/res/values* 2>/dev/null || true
+
+            echo
+            echo "===== DRAWABLE RESOURCES ====="
+            find decoded/res -maxdepth 2 -type f \
+              \( -iname '*icon*' -o -iname '*logo*' -o -iname '*power*' -o -iname '*connect*' \) \
+              | sort | head -100
+
+            echo
+            echo "===== DECODED SIZE ====="
+            du -sh decoded
+          } | tee inspection/report.txt
+
+          cp decoded/AndroidManifest.xml inspection/
+
+          mkdir -p inspection/layouts inspection/values inspection/drawables
+
+          find decoded/res -maxdepth 2 -type f \
+            \( -path '*/layout*/*' -o -path '*/values*/*' \) \
+            -exec cp --parents '{}' inspection/ \;
+
+          find decoded/res -maxdepth 2 -type f \
+            \( -iname '*icon*' -o -iname '*logo*' -o -iname '*power*' -o -iname '*connect*' \) \
+            -exec cp --parents '{}' inspection/ \;
+
+      - name: Upload inspection report
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitunnel-apk-inspection
+          path: inspection/
+          if-no-files-found: error
+          retention-days: 7

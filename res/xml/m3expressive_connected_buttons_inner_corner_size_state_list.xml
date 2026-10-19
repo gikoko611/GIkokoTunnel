@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:sweet="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt">
+    <item android:state_checkable="true" android:state_pressed="true" sweet:cornerSize="?attr/shapeCornerSizeExtraSmall"/>
+    <item android:state_checked="true" sweet:cornerSize="50%"/>
+    <item sweet:cornerSize="?attr/shapeCornerSizeSmall"/>
+</selector>

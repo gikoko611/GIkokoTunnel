@@ -1,0 +1,144 @@
+package ads_mobile_sdk;
+
+import java.io.Closeable;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+
+/* DevToolsApp ERROR: NullPointerException in pass: b
+    java.lang.NullPointerException: Attempt to invoke interface method 'java.util.Iterator java.util.List.iterator()' on a null object reference
+    	at U4.b.f(SourceFile:555)
+    	at androidx.work.D.T(SourceFile:1)
+    	at n1.c.u(SourceFile:42)
+    	at n1.c.u(SourceFile:83)
+    	at C4.c.run(SourceFile:73)
+    */
+public abstract class rg3 implements Closeable {
+    public kh3 a;
+    public final rg3 b;
+    public final long c;
+    public final AtomicBoolean d;
+    public final AtomicLong e;
+    public final AtomicLong f;
+
+    /* DevToolsApp ERROR: Method load error
+        g.d.a.b.DevToolsAppDecodeE: Load method exception: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.<init>(ads_mobile_sdk.fw0, ads_mobile_sdk.kh3, java.util.UUID, ads_mobile_sdk.rg3, long):void, dex: classes.dex in method: ads_mobile_sdk.rg3.<init>(ads_mobile_sdk.fw0, ads_mobile_sdk.kh3, java.util.UUID, ads_mobile_sdk.rg3, long):void, dex: classes.dex
+        	at O4.o.y(SourceFile:95)
+        	at O4.b.v(SourceFile:19)
+        	at n1.c.u(SourceFile:19)
+        	at n1.c.u(SourceFile:83)
+        	at C4.c.run(SourceFile:73)
+        Caused by: g.d.a.b.DevToolsAppDecodeE: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.<init>(ads_mobile_sdk.fw0, ads_mobile_sdk.kh3, java.util.UUID, ads_mobile_sdk.rg3, long):void, dex: classes.dex
+        	at v0.s.u(SourceFile:75)
+        	at O4.o.y(SourceFile:40)
+        	... 4 more
+        Caused by: com.android.dex.DexException: bogus element_width: 0000
+        	at com.android.dx.io.instructions.InstructionCodec$36.h(SourceFile:59)
+        	at v0.s.u(SourceFile:53)
+        	... 5 more
+        */
+    public rg3(ads_mobile_sdk.fw0 r1, ads_mobile_sdk.kh3 r2, java.util.UUID r3, ads_mobile_sdk.rg3 r4, long r5) {
+        /*
+        // Can't load method instructions: Load method exception: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.<init>(ads_mobile_sdk.fw0, ads_mobile_sdk.kh3, java.util.UUID, ads_mobile_sdk.rg3, long):void, dex: classes.dex in method: ads_mobile_sdk.rg3.<init>(ads_mobile_sdk.fw0, ads_mobile_sdk.kh3, java.util.UUID, ads_mobile_sdk.rg3, long):void, dex: classes.dex
+        */
+        throw new UnsupportedOperationException("Method not decompiled: ads_mobile_sdk.rg3.<init>(ads_mobile_sdk.fw0, ads_mobile_sdk.kh3, java.util.UUID, ads_mobile_sdk.rg3, long):void");
+    }
+
+    public abstract rg3 a(fw0 fw0, List list, boolean z);
+
+    /* DevToolsApp ERROR: Method load error
+        g.d.a.b.DevToolsAppDecodeE: Load method exception: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.a(java.lang.Throwable):void, dex: classes.dex in method: ads_mobile_sdk.rg3.a(java.lang.Throwable):void, dex: classes.dex
+        	at O4.o.y(SourceFile:95)
+        	at O4.b.v(SourceFile:19)
+        	at n1.c.u(SourceFile:19)
+        	at n1.c.u(SourceFile:83)
+        	at C4.c.run(SourceFile:73)
+        Caused by: g.d.a.b.DevToolsAppDecodeE: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.a(java.lang.Throwable):void, dex: classes.dex
+        	at v0.s.u(SourceFile:75)
+        	at O4.o.y(SourceFile:40)
+        	... 4 more
+        Caused by: com.android.dex.DexException: bogus element_width: 0000
+        	at com.android.dx.io.instructions.InstructionCodec$36.h(SourceFile:59)
+        	at v0.s.u(SourceFile:53)
+        	... 5 more
+        */
+    public final void a(java.lang.Throwable r1) {
+        /*
+        // Can't load method instructions: Load method exception: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.a(java.lang.Throwable):void, dex: classes.dex in method: ads_mobile_sdk.rg3.a(java.lang.Throwable):void, dex: classes.dex
+        */
+        throw new UnsupportedOperationException("Method not decompiled: ads_mobile_sdk.rg3.a(java.lang.Throwable):void");
+    }
+
+    /* DevToolsApp ERROR: Method load error
+        g.d.a.b.DevToolsAppDecodeE: Load method exception: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.a$1():void, dex: classes.dex in method: ads_mobile_sdk.rg3.a$1():void, dex: classes.dex
+        	at O4.o.y(SourceFile:95)
+        	at O4.b.v(SourceFile:19)
+        	at n1.c.u(SourceFile:19)
+        	at n1.c.u(SourceFile:83)
+        	at C4.c.run(SourceFile:73)
+        Caused by: g.d.a.b.DevToolsAppDecodeE: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.a$1():void, dex: classes.dex
+        	at v0.s.u(SourceFile:75)
+        	at O4.o.y(SourceFile:40)
+        	... 4 more
+        Caused by: com.android.dex.DexException: bogus element_width: 0000
+        	at com.android.dx.io.instructions.InstructionCodec$36.h(SourceFile:59)
+        	at v0.s.u(SourceFile:53)
+        	... 5 more
+        */
+    public void a$1() {
+        /*
+        // Can't load method instructions: Load method exception: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.a$1():void, dex: classes.dex in method: ads_mobile_sdk.rg3.a$1():void, dex: classes.dex
+        */
+        throw new UnsupportedOperationException("Method not decompiled: ads_mobile_sdk.rg3.a$1():void");
+    }
+
+    /* DevToolsApp ERROR: Method load error
+        g.d.a.b.DevToolsAppDecodeE: Load method exception: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.b(java.lang.Throwable):void, dex: classes.dex in method: ads_mobile_sdk.rg3.b(java.lang.Throwable):void, dex: classes.dex
+        	at O4.o.y(SourceFile:95)
+        	at O4.b.v(SourceFile:19)
+        	at n1.c.u(SourceFile:19)
+        	at n1.c.u(SourceFile:83)
+        	at C4.c.run(SourceFile:73)
+        Caused by: g.d.a.b.DevToolsAppDecodeE: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.b(java.lang.Throwable):void, dex: classes.dex
+        	at v0.s.u(SourceFile:75)
+        	at O4.o.y(SourceFile:40)
+        	... 4 more
+        Caused by: com.android.dex.DexException: bogus element_width: 0000
+        	at com.android.dx.io.instructions.InstructionCodec$36.h(SourceFile:59)
+        	at v0.s.u(SourceFile:53)
+        	... 5 more
+        */
+    public final void b(java.lang.Throwable r1) {
+        /*
+        // Can't load method instructions: Load method exception: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.b(java.lang.Throwable):void, dex: classes.dex in method: ads_mobile_sdk.rg3.b(java.lang.Throwable):void, dex: classes.dex
+        */
+        throw new UnsupportedOperationException("Method not decompiled: ads_mobile_sdk.rg3.b(java.lang.Throwable):void");
+    }
+
+    /* DevToolsApp ERROR: Method load error
+        g.d.a.b.DevToolsAppDecodeE: Load method exception: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.close():void, dex: classes.dex in method: ads_mobile_sdk.rg3.close():void, dex: classes.dex
+        	at O4.o.y(SourceFile:95)
+        	at O4.b.v(SourceFile:19)
+        	at n1.c.u(SourceFile:19)
+        	at n1.c.u(SourceFile:83)
+        	at C4.c.run(SourceFile:73)
+        Caused by: g.d.a.b.DevToolsAppDecodeE: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.close():void, dex: classes.dex
+        	at v0.s.u(SourceFile:75)
+        	at O4.o.y(SourceFile:40)
+        	... 4 more
+        Caused by: com.android.dex.DexException: bogus element_width: 0000
+        	at com.android.dx.io.instructions.InstructionCodec$36.h(SourceFile:59)
+        	at v0.s.u(SourceFile:53)
+        	... 5 more
+        */
+    public final void close() {
+        /*
+        // Can't load method instructions: Load method exception: bogus element_width: 0000 in method: ads_mobile_sdk.rg3.close():void, dex: classes.dex in method: ads_mobile_sdk.rg3.close():void, dex: classes.dex
+        */
+        throw new UnsupportedOperationException("Method not decompiled: ads_mobile_sdk.rg3.close():void");
+    }
+
+    public abstract ub2 e();
+
+    public abstract void h();
+}
